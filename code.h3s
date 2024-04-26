@@ -1,0 +1,7 @@
+nt c = 10;
+int d = 20;
+int f= "string";
+
+int x= c+d;
+print(c)
+

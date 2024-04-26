@@ -1,0 +1,85 @@
+{
+       "Program": {
+        {
+          "Statement": "Identifier",
+          "Symbol": "nt"
+        },
+        {
+          "Statement": "AssigmentExpr",
+          "Assignee":             {
+              "Statement": "Identifier",
+              "Symbol": "c"
+            },
+          "Value":             {
+              "Statement": "NumericLiteral",
+              "Value": 10
+            }
+        },
+        {
+          "Statement": "Identifier",
+          "Symbol": "int"
+        },
+        {
+          "Statement": "AssigmentExpr",
+          "Assignee":             {
+              "Statement": "Identifier",
+              "Symbol": "d"
+            },
+          "Value":             {
+              "Statement": "NumericLiteral",
+              "Value": 20
+            }
+        },
+        {
+          "Statement": "Identifier",
+          "Symbol": "int"
+        },
+        {
+          "Statement": "AssigmentExpr",
+          "Assignee":             {
+              "Statement": "Identifier",
+              "Symbol": "f"
+            },
+          "Value":             {
+              "Statement": "StrLiteral",
+              "Value": "string"
+            }
+        },
+        {
+          "Statement": "Identifier",
+          "Symbol": "int"
+        },
+        {
+          "Statement": "AssigmentExpr",
+          "Assignee":             {
+              "Statement": "Identifier",
+              "Symbol": "x"
+            },
+          "Value":             {
+              "Statement": "BinaryExpr",
+              "BinaryOperator": "+",
+              "Left":                 {
+                  "Statement": "Identifier",
+                  "Symbol": "c"
+                },
+              "Right":                 {
+                  "Statement": "Identifier",
+                  "Symbol": "d"
+                }
+            }
+        },
+        {
+          "Statement": "CallExpr",
+          "Caller":             {
+              "Statement": "Identifier",
+              "Symbol": "print"
+            },
+          "Arguments": [
+            {
+              "Statement": "Identifier",
+              "Symbol": "c"
+            }
+          ]
+        }
+      }
+}
