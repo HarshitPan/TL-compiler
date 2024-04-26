@@ -1,10 +1,10 @@
 // #include "Parser.h"
 #include <string>
 
-std::unique_ptr<Program> Parser::produceAST(std::vector<Token> tokens) {
+unique_ptr<Program> Parser::produceAST(vector<Token> tokens) {
   this->tokens = tokens;
 
-  std::unique_ptr<Program> program = std::make_unique<Program>();
+  unique_ptr<Program> program = make_unique<Program>();
   program->kind = NodeType::Program;
 
   while (!eof()) {
@@ -31,10 +31,10 @@ Token Parser::lookahead(size_t num) {
   return tokens[num];
 }
 
-Token Parser::expect(TokenType type, const std::string &err) {
+Token Parser::expect(TokenType type, const string &err) {
   Token prev = this->eat();
   if (prev.getType() != type) {
-    throw ParserError(err + prev.getValue() + " - Expecting: " + std::to_string(static_cast<int>(type)));
+    throw ParserError(err + prev.getValue() + " - Expecting: " + to_string(static_cast<int>(type)));
   }
   return prev;
 }
@@ -45,11 +45,11 @@ bool Parser::is_comparison_operator(TokenType type) {
          type == TokenType::EqualEqual || type == TokenType::NotEqual;
 }
 
-bool Parser::is_additive_operator(std::string value) {
+bool Parser::is_additive_operator(string value) {
   return value == "+" || value == "-";
 }
 
-bool Parser::is_multiplicative_operator(std::string value) {
+bool Parser::is_multiplicative_operator(string value) {
   return value == "*" || value == "/" || value == "%";
 }
 

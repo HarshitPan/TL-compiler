@@ -1,14 +1,65 @@
 {
        "Program": {
         {
-          "Statement": "Identifier",
-          "Symbol": "nt"
+          "Statement": "VarDeclaration",
+          "Constant": false,
+          "Identifier": "a",
+          "Value":             {
+              "Statement": "NumericLiteral",
+              "Value": 10
+            }
+        },
+        {
+          "Statement": "VarDeclaration",
+          "Constant": true,
+          "Identifier": "b",
+          "Value":             {
+              "Statement": "Null",
+              "Value": "null"
+            }
+        },
+        {
+          "Statement": "BinaryExpr",
+          "BinaryOperator": "+",
+          "Left":             {
+              "Statement": "Identifier",
+              "Symbol": "aa"
+            },
+          "Right":             {
+              "Statement": "Identifier",
+              "Symbol": "bb"
+            }
+        },
+        {
+          "Statement": "VarDeclaration",
+          "Constant": false,
+          "Identifier": "c",
+          "Value":             {
+              "Statement": "BinaryExpr",
+              "BinaryOperator": "+",
+              "Left":                 {
+                  "Statement": "Identifier",
+                  "Symbol": "a"
+                },
+              "Right":                 {
+                  "Statement": "BinaryExpr",
+                  "BinaryOperator": "*",
+                  "Left":                     {
+                      "Statement": "Identifier",
+                      "Symbol": "b"
+                    },
+                  "Right":                     {
+                      "Statement": "NumericLiteral",
+                      "Value": 10
+                    }
+                }
+            }
         },
         {
           "Statement": "AssigmentExpr",
           "Assignee":             {
               "Statement": "Identifier",
-              "Symbol": "c"
+              "Symbol": "b"
             },
           "Value":             {
               "Statement": "NumericLiteral",
@@ -16,57 +67,104 @@
             }
         },
         {
-          "Statement": "Identifier",
-          "Symbol": "int"
+          "Statement": "VarDeclaration",
+          "Constant": false,
+          "Identifier": "f",
+          "Value": null
         },
         {
-          "Statement": "AssigmentExpr",
-          "Assignee":             {
-              "Statement": "Identifier",
-              "Symbol": "d"
-            },
-          "Value":             {
-              "Statement": "NumericLiteral",
-              "Value": 20
-            }
-        },
-        {
-          "Statement": "Identifier",
-          "Symbol": "int"
-        },
-        {
-          "Statement": "AssigmentExpr",
-          "Assignee":             {
-              "Statement": "Identifier",
-              "Symbol": "f"
-            },
-          "Value":             {
-              "Statement": "StrLiteral",
-              "Value": "string"
-            }
-        },
-        {
-          "Statement": "Identifier",
-          "Symbol": "int"
-        },
-        {
-          "Statement": "AssigmentExpr",
-          "Assignee":             {
-              "Statement": "Identifier",
-              "Symbol": "x"
-            },
-          "Value":             {
-              "Statement": "BinaryExpr",
-              "BinaryOperator": "+",
+          "Statement": "IfStatement",
+          "Condition":             {
+              "Statement": "LogicalExpr",
+              "LogicalOperator": "&&",
               "Left":                 {
-                  "Statement": "Identifier",
-                  "Symbol": "c"
+                  "Statement": "BinaryExpr",
+                  "BinaryOperator": "==",
+                  "Left":                     {
+                      "Statement": "Identifier",
+                      "Symbol": "a"
+                    },
+                  "Right":                     {
+                      "Statement": "Identifier",
+                      "Symbol": "b"
+                    }
                 },
               "Right":                 {
-                  "Statement": "Identifier",
-                  "Symbol": "d"
+                  "Statement": "BinaryExpr",
+                  "BinaryOperator": "<=",
+                  "Left":                     {
+                      "Statement": "Identifier",
+                      "Symbol": "b"
+                    },
+                  "Right":                     {
+                      "Statement": "Identifier",
+                      "Symbol": "c"
+                    }
                 }
+            },
+          "IfBody": [
+            {
+              "Statement": "IfStatement",
+              "Condition":                 {
+                  "Statement": "NumericLiteral",
+                  "Value": 1
+                },
+              "IfBody": [
+                {
+                  "Statement": "CallExpr",
+                  "Caller":                     {
+                      "Statement": "Identifier",
+                      "Symbol": "print"
+                    },
+                  "Arguments": [
+                    {
+                      "Statement": "Identifier",
+                      "Symbol": "a"
+                    }
+                  ]
+                }
+              ],
+              "ElseBody": [
+                {
+                  "Statement": "CallExpr",
+                  "Caller":                     {
+                      "Statement": "Identifier",
+                      "Symbol": "print"
+                    },
+                  "Arguments": [
+                    {
+                      "Statement": "NumericLiteral",
+                      "Value": 2
+                    }
+                  ]
+                }
+              ]
             }
+          ],
+          "ElseBody": [
+          ]
+        },
+        {
+          "Statement": "WhileLoop",
+          "Condition":             {
+              "Statement": "NumericLiteral",
+              "Value": 1
+            },
+          "LoopBody": [
+            {
+              "Statement": "CallExpr",
+              "Caller":                 {
+                  "Statement": "Identifier",
+                  "Symbol": "print"
+                },
+              "Arguments": [
+                {
+                  "Statement": "Identifier",
+                  "Symbol": "c"
+                }
+              ]
+            }
+          ]
         },
         {
           "Statement": "CallExpr",
@@ -77,9 +175,64 @@
           "Arguments": [
             {
               "Statement": "Identifier",
-              "Symbol": "c"
+              "Symbol": "f"
             }
           ]
+        },
+        {
+          "Statement": "FunctionDeclaration",
+          "Name": "name",
+          "Parameters": [
+            "a",
+            "b"
+          ],
+          "Body": [
+            {
+              "Statement": "CallExpr",
+              "Caller":                 {
+                  "Statement": "Identifier",
+                  "Symbol": "print"
+                },
+              "Arguments": [
+                {
+                  "Statement": "BinaryExpr",
+                  "BinaryOperator": "+",
+                  "Left":                     {
+                      "Statement": "Identifier",
+                      "Symbol": "a"
+                    },
+                  "Right":                     {
+                      "Statement": "Identifier",
+                      "Symbol": "b"
+                    }
+                }
+              ]
+            },
+            {
+              "Statement": "ReturnStatement",
+              "ReturnValue":                 {
+                  "Statement": "NumericLiteral",
+                  "Value": 5
+                }
+            }
+          ]
+        },
+        {
+          "Statement": "StructDeclaration",
+          "StructName": "name"          {
+            "Statement": "VarDeclaration",
+            "Constant": false,
+            "Identifier": "a",
+            "Value": null
+          }          {
+            "Statement": "VarDeclaration",
+            "Constant": true,
+            "Identifier": "b",
+            "Value":               {
+                "Statement": "NumericLiteral",
+                "Value": 20
+              }
+          }
         }
       }
 }

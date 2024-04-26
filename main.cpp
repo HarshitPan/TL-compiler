@@ -1,5 +1,6 @@
 #include<iostream>
 #include<fstream>
+using namespace std;
 
 #include "ast/AST.h"
 #include "lexer/Lexer.h"

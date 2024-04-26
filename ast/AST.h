@@ -48,72 +48,72 @@ public:
 
 class Program : public Stmt {
 public:
-  std::vector<std::unique_ptr<Stmt>> body;
+  vector<unique_ptr<Stmt>> body;
   Program();
 };
 
 class AssignmentExpr : public Expr {
 public:
-  std::unique_ptr<Expr> assigne;
-  std::unique_ptr<Expr> value;
-  AssignmentExpr(std::unique_ptr<Expr> assigne, std::unique_ptr<Expr> value);
+  unique_ptr<Expr> assigne;
+  unique_ptr<Expr> value;
+  AssignmentExpr(unique_ptr<Expr> assigne, unique_ptr<Expr> value);
 };
 
 class VarDeclaration : public Stmt {
 public:
   bool constant;
-  std::string identifier;
-  std::unique_ptr<Expr> value;
-  VarDeclaration(bool isConst, const std::string &id,
-                 std::unique_ptr<Expr> val = nullptr);
+  string identifier;
+  unique_ptr<Expr> value;
+  VarDeclaration(bool isConst, const string &id,
+                 unique_ptr<Expr> val = nullptr);
 };
 
 class ReturnStatement : public Stmt {
 public:
-  std::unique_ptr<Stmt> returnValue;
-  ReturnStatement(std::unique_ptr<Stmt> value);
+  unique_ptr<Stmt> returnValue;
+  ReturnStatement(unique_ptr<Stmt> value);
 };
 
 class FunctionDeclaration : public Stmt {
 public:
-  std::vector<std::string> parameters;
-  std::string name;
-  std::vector<Stmt *> body;
-  std::unique_ptr<ReturnStatement> returnStatement;
-  FunctionDeclaration(std::vector<std::string> param, std::string n,
-                      std::vector<Stmt *> b,
-                      std::unique_ptr<ReturnStatement> retStmt = nullptr);
+  vector<string> parameters;
+  string name;
+  vector<Stmt *> body;
+  unique_ptr<ReturnStatement> returnStatement;
+  FunctionDeclaration(vector<string> param, string n,
+                      vector<Stmt *> b,
+                      unique_ptr<ReturnStatement> retStmt = nullptr);
   ~FunctionDeclaration();
 };
 
 class BinaryExpr : public Expr {
 public:
-  std::unique_ptr<Expr> left;
-  std::unique_ptr<Expr> right;
-  std::string binaryOperator;
-  BinaryExpr(std::unique_ptr<Expr> left, std::unique_ptr<Expr> right,
-             const std::string &op);
+  unique_ptr<Expr> left;
+  unique_ptr<Expr> right;
+  string binaryOperator;
+  BinaryExpr(unique_ptr<Expr> left, unique_ptr<Expr> right,
+             const string &op);
 };
 
 class UnaryExpr : public Expr {
 public:
-  std::unique_ptr<Expr> right;
-  std::string op;
-  UnaryExpr(std::unique_ptr<Expr> right, const std::string &op);
+  unique_ptr<Expr> right;
+  string op;
+  UnaryExpr(unique_ptr<Expr> right, const string &op);
 };
 
 class CallExpr : public Expr {
 public:
-  std::unique_ptr<Expr> caller;
-  std::vector<std::unique_ptr<Expr>> args;
-  CallExpr(std::unique_ptr<Expr> caller,
-           std::vector<std::unique_ptr<Expr>> args);
+  unique_ptr<Expr> caller;
+  vector<unique_ptr<Expr>> args;
+  CallExpr(unique_ptr<Expr> caller,
+           vector<unique_ptr<Expr>> args);
 };
 
 class IdentifierExpr : public Expr {
 public:
-  std::string symbol;
-  IdentifierExpr(const std::string &symbol);
+  string symbol;
+  IdentifierExpr(const string &symbol);
 };
 
 class NumericLiteral : public Expr {
@@ -124,8 +124,8 @@ public:
 
 class StrLiteral : public Expr {
 public:
-  std::string value;
-  StrLiteral(std::string value);
+  string value;
+  StrLiteral(string value);
 };
 
 class FloatLiteral : public Expr {
@@ -136,55 +136,55 @@ public:
 
 class NullLiteral : public Expr {
 public:
-  std::string value;
-  NullLiteral(const std::string &value);
+  string value;
+  NullLiteral(const string &value);
 };
 
 class IfStatement : public Stmt {
 public:
-  std::unique_ptr<Expr> condition;
-  std::vector<std::unique_ptr<Stmt>> ifBody;
-  std::vector<std::unique_ptr<Stmt>> elseBody;
-  IfStatement(std::unique_ptr<Expr> cond,
-              std::vector<std::unique_ptr<Stmt>> ifB,
-              std::vector<std::unique_ptr<Stmt>> elseB = {});
+  unique_ptr<Expr> condition;
+  vector<unique_ptr<Stmt>> ifBody;
+  vector<unique_ptr<Stmt>> elseBody;
+  IfStatement(unique_ptr<Expr> cond,
+              vector<unique_ptr<Stmt>> ifB,
+              vector<unique_ptr<Stmt>> elseB = {});
 };
 
 class WhileLoop : public Stmt {
 public:
-  std::unique_ptr<Expr> condition;
-  std::vector<std::unique_ptr<Stmt>> loopBody;
-  WhileLoop(std::unique_ptr<Expr> cond, std::vector<std::unique_ptr<Stmt>> bd);
+  unique_ptr<Expr> condition;
+  vector<unique_ptr<Stmt>> loopBody;
+  WhileLoop(unique_ptr<Expr> cond, vector<unique_ptr<Stmt>> bd);
 };
 
 class StructDeclaration : public Stmt {
 public:
-  std::string structName;
-  std::vector<std::unique_ptr<Stmt>> structBody;
-  StructDeclaration(const std::string &name,
-                    std::vector<std::unique_ptr<Stmt>> body);
+  string structName;
+  vector<unique_ptr<Stmt>> structBody;
+  StructDeclaration(const string &name,
+                    vector<unique_ptr<Stmt>> body);
 };
 
 class MemberAccessExpr : public Expr {
 public:
-  std::unique_ptr<Expr> object;
-  std::string memberName;
-  MemberAccessExpr(std::unique_ptr<Expr> obj, const std::string &member);
+  unique_ptr<Expr> object;
+  string memberName;
+  MemberAccessExpr(unique_ptr<Expr> obj, const string &member);
 };
 
 class LogicalExpr : public Expr {
 public:
-    std::unique_ptr<Expr> left;
-    std::unique_ptr<Expr> right;
-    std::string logicalOperator;
+    unique_ptr<Expr> left;
+    unique_ptr<Expr> right;
+    string logicalOperator;
 
-    LogicalExpr(std::unique_ptr<Expr> left, std::unique_ptr<Expr> right, const std::string& logicalOperator);
+    LogicalExpr(unique_ptr<Expr> left, unique_ptr<Expr> right, const string& logicalOperator);
 };
 
-std::string NodeTypeToString(NodeType type);
+string NodeTypeToString(NodeType type);
 
-void printProgram(std::unique_ptr<Program> program, const std::string &indent);
+void printProgram(unique_ptr<Program> program, const string &indent);
 
-void printStatement(const Stmt &stmt, const std::string &indent);
+void printStatement(const Stmt &stmt, const string &indent);
 
 #endif

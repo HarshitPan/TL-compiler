@@ -1,7 +1,7 @@
 // #include "Parser.cpp"
 
-using ExprPtr = std::unique_ptr<Expr>;
-using StmtPtr = std::unique_ptr<Stmt>;
+using ExprPtr = unique_ptr<Expr>;
+using StmtPtr = unique_ptr<Stmt>;
 
 StmtPtr Parser::parse_stmt() {
   try {
@@ -48,14 +48,14 @@ StmtPtr Parser::parse_while_statement() {
 
     expect(TokenType::OpenBrace, "Expected '{' open 'while' body");
 
-    std::vector<StmtPtr> loopBody;
+    vector<StmtPtr> loopBody;
     while (at().getType() != TokenType::CloseBrace) {
       loopBody.push_back(parse_stmt());
     }
 
     expect(TokenType::CloseBrace, "Expected '}' close 'while' body");
 
-    return std::make_unique<WhileLoop>(std::move(condition), std::move(loopBody));
+    return make_unique<WhileLoop>(move(condition), move(loopBody));
   }
   catch (const ParserError& e) {
     throw;
@@ -69,12 +69,12 @@ StmtPtr Parser::parse_return_statement() {
     if (at().getType() == TokenType::Semicolon) {
       // Return statement without a value
       eat(); // Consume the semicolon
-      return std::make_unique<ReturnStatement>(nullptr);
+      return make_unique<ReturnStatement>(nullptr);
     } else {
       // Return statement with a value
-      std::unique_ptr<Stmt> value = parse_stmt();
+      unique_ptr<Stmt> value = parse_stmt();
       expect(TokenType::Semicolon, "Return statement must end with a semicolon.");
-      return std::make_unique<ReturnStatement>(std::move(value));
+      return make_unique<ReturnStatement>(move(value));
     }
   }
   catch (const ParserError& e) {
@@ -91,7 +91,7 @@ StmtPtr Parser::parse_if_statement() {
 
     expect(TokenType::CloseParen, "Expected ')' after 'if' condition");
 
-    std::vector<StmtPtr> ifBody;
+    vector<StmtPtr> ifBody;
 
     expect(TokenType::OpenBrace, "Expected '{' open 'if' body");
 
@@ -101,7 +101,7 @@ StmtPtr Parser::parse_if_statement() {
 
     expect(TokenType::CloseBrace, "Expected '}' close 'if' body");
 
-    std::vector<StmtPtr> elseBody;
+    vector<StmtPtr> elseBody;
 
     if (at().getType() == TokenType::Else) {
       eat();
@@ -113,8 +113,8 @@ StmtPtr Parser::parse_if_statement() {
       expect(TokenType::CloseBrace, "Expected '}' close 'else' body");
     }
 
-    return std::make_unique<IfStatement>(std::move(condition), std::move(ifBody),
-                                         std::move(elseBody));
+    return make_unique<IfStatement>(move(condition), move(ifBody),
+                                         move(elseBody));
   }
   catch (const ParserError& e) {
     throw;
@@ -125,7 +125,7 @@ StmtPtr Parser::parse_var_declaration() {
   try {
   bool isConstant = this->eat().getType() == TokenType::Const;
 
-  std::string identifier =
+  string identifier =
       expect(TokenType::Identifier,
              "Expected identifier name following let | const keywords.")
           .getValue();
@@ -133,13 +133,13 @@ StmtPtr Parser::parse_var_declaration() {
   if (this->at().getType() == TokenType::Semicolon) {
     this->eat();
     if (isConstant) {
-      std::cerr
+      cerr
           << "Must assign value to constant expression. No value provided."
-          << std::endl;
-      std::exit(1);
+          << endl;
+      exit(1);
     }
 
-    return std::make_unique<VarDeclaration>(false, identifier);
+    return make_unique<VarDeclaration>(false, identifier);
   }
 
   expect(TokenType::Equals,
@@ -149,8 +149,8 @@ StmtPtr Parser::parse_var_declaration() {
 
   expect(TokenType::Semicolon, "Var declaration must end with a semicolon.");
 
-  return std::make_unique<VarDeclaration>(isConstant, identifier,
-                                          std::move(value));
+  return make_unique<VarDeclaration>(isConstant, identifier,
+                                          move(value));
   }
   catch (const ParserError& e) {
     throw;
@@ -160,27 +160,27 @@ StmtPtr Parser::parse_var_declaration() {
 StmtPtr Parser::parse_function_declaration() {
   try {
     this->eat();
-    std::string name = this->expect(TokenType::Identifier,
+    string name = this->expect(TokenType::Identifier,
                                     "Expected function name following fn keyword")
                            .getValue();
-    std::vector<ExprPtr> args = this->parse_args();
+    vector<ExprPtr> args = this->parse_args();
 
-    std::vector<std::string> params;
+    vector<string> params;
 
     for (auto &arg : args) {
       if (arg->kind == NodeType::Identifier) {
         params.push_back(static_cast<IdentifierExpr *>(arg.get())->symbol);
       } else {
-        std::cerr << "Inside function declaration expected parameters to be of "
+        cerr << "Inside function declaration expected parameters to be of "
                      "type Identifier."
-                  << std::endl;
-        std::exit(1);
+                  << endl;
+        exit(1);
       }
     }
 
     expect(TokenType::OpenBrace, "Expected function body following declaration");
 
-    std::vector<Stmt *> body;
+    vector<Stmt *> body;
 
     while (this->at().getType() != TokenType::EOFToken &&
            this->at().getType() != TokenType::CloseBrace) {
@@ -190,7 +190,7 @@ StmtPtr Parser::parse_function_declaration() {
     expect(TokenType::CloseBrace,
            "Closing brace expected inside function declaration");
 
-    return std::make_unique<FunctionDeclaration>(std::move(params), name, body);
+    return make_unique<FunctionDeclaration>(move(params), name, body);
   }
   catch (const ParserError& e) {
     throw;
@@ -201,14 +201,14 @@ StmtPtr Parser::parse_struct_declaration() {
   try {
     eat(); // Consume the "struct" keyword
 
-    std::string structName =
+    string structName =
         expect(TokenType::Identifier,
                "Expected struct name following 'struct' keyword")
             .getValue();
 
     expect(TokenType::OpenBrace, "Expected '{' after struct name");
 
-    std::vector<std::unique_ptr<Stmt>> structBody;
+    vector<unique_ptr<Stmt>> structBody;
 
     while (at().getType() != TokenType::CloseBrace) {
       structBody.push_back(parse_var_declaration());
@@ -216,7 +216,7 @@ StmtPtr Parser::parse_struct_declaration() {
 
     expect(TokenType::CloseBrace, "Expected '}' after struct body");
 
-    return std::make_unique<StructDeclaration>(structName, std::move(structBody));
+    return make_unique<StructDeclaration>(structName, move(structBody));
   }
   catch (const ParserError& e) {
     throw;

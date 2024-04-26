@@ -1,7 +1,29 @@
-nt c = 10;
-int d = 20;
-int f= "string";
+let a=10;
+const b=null;
+aa+bb
+let c=a+b*10;
+b=10;
+let f;
+if(a==b && b<=c){
+    if(1){
+      print(a)
+    }
+    else {
+        print(2)
+    }
+}
+while(1){
+    print(c)
+}
+# for(;cond;)
+print(f)
 
-int x= c+d;
-print(c)
+func name(a,b){
+    print(a+b)
+    return 5;
+}
 
+struct name{
+    let a;
+    const b=20;   
+}

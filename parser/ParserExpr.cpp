@@ -1,7 +1,7 @@
 // #include "Parser.cpp"
 
-using ExprPtr = std::unique_ptr<Expr>;
-using StmtPtr = std::unique_ptr<Stmt>;
+using ExprPtr = unique_ptr<Expr>;
+using StmtPtr = unique_ptr<Stmt>;
 
 ExprPtr Parser::parse_expr() { 
   try {
@@ -18,9 +18,9 @@ ExprPtr Parser::parse_logical_expr() {
     ExprPtr left = parse_comparision_expr();
 
     while (is_logical_operator(at().getType())) {
-        std::string logicalOperator = eat().getValue();
+        string logicalOperator = eat().getValue();
         ExprPtr right = parse_comparision_expr();
-        left = std::make_unique<LogicalExpr>(std::move(left), std::move(right), logicalOperator);
+        left = make_unique<LogicalExpr>(move(left), move(right), logicalOperator);
     }
 
     return left;
@@ -35,9 +35,9 @@ ExprPtr Parser::parse_comparision_expr() {
    ExprPtr left = parse_additive_expr();
 
     if (is_comparison_operator(at().getType())) {
-        std::string comparisonOperator = eat().getValue();
+        string comparisonOperator = eat().getValue();
         ExprPtr right = parse_additive_expr();
-        left = std::make_unique<BinaryExpr>(std::move(left), std::move(right), comparisonOperator);
+        left = make_unique<BinaryExpr>(move(left), move(right), comparisonOperator);
     }
 
     return left;
@@ -54,28 +54,28 @@ ExprPtr Parser::parse_primary_expr() {
 
   if (tk == TokenType::Not) {
     this->eat();
-    value = std::make_unique<UnaryExpr>(parse_primary_expr(), "!");
+    value = make_unique<UnaryExpr>(parse_primary_expr(), "!");
   } else if (tk == TokenType::BinaryOperator && at().getValue() == "-") {
     this->eat();
-    value = std::make_unique<UnaryExpr>(parse_primary_expr(), "-");
+    value = make_unique<UnaryExpr>(parse_primary_expr(), "-");
   } else {
     switch (tk) {
     case TokenType::Identifier:
       value = parse_member_access(
-          std::make_unique<IdentifierExpr>(eat().getValue()));
+          make_unique<IdentifierExpr>(eat().getValue()));
       break;
     case TokenType::NumberLiteral:
-      value = std::make_unique<NumericLiteral>(std::stod(eat().getValue()));
+      value = make_unique<NumericLiteral>(stod(eat().getValue()));
       break;
     case TokenType::FloatLiteral:
-      value = std::make_unique<NumericLiteral>(std::stod(eat().getValue()));
+      value = make_unique<NumericLiteral>(stod(eat().getValue()));
       break;
     case TokenType::StringLiteral:
-      value = std::make_unique<StrLiteral>(eat().getValue());
+      value = make_unique<StrLiteral>(eat().getValue());
       break;
     case TokenType::Null:
       eat();
-      value = std::make_unique<NullLiteral>("null");
+      value = make_unique<NullLiteral>("null");
       break;
     case TokenType::OpenParen:
       eat();
@@ -86,9 +86,9 @@ ExprPtr Parser::parse_primary_expr() {
       break;
     default:
       value = nullptr;
-      std::cerr << "Unexpected token found during parsing! " << at().getValue()
-                << std::endl;
-      std::exit(1);
+      cerr << "Unexpected token found during parsing! " << at().getValue()
+                << endl;
+      exit(1);
     }
   }
 
@@ -105,9 +105,9 @@ ExprPtr Parser::parse_additive_expr() {
     ExprPtr left = parse_multiplicative_expr();
 
     while (is_additive_operator(at().getValue())) {
-      std::string binaryOperator = eat().getValue();
+      string binaryOperator = eat().getValue();
       ExprPtr right = parse_multiplicative_expr();
-      left = std::make_unique<BinaryExpr>(std::move(left), std::move(right),
+      left = make_unique<BinaryExpr>(move(left), move(right),
                                           binaryOperator);
     }
 
@@ -123,9 +123,9 @@ ExprPtr Parser::parse_multiplicative_expr() {
     ExprPtr left = parse_call_member_expr();
 
     while (is_multiplicative_operator(at().getValue())) {
-      std::string binaryOperator = eat().getValue();
+      string binaryOperator = eat().getValue();
       ExprPtr right = parse_primary_expr();
-      left = std::make_unique<BinaryExpr>(std::move(left), std::move(right),
+      left = make_unique<BinaryExpr>(move(left), move(right),
                                           binaryOperator);
     }
 
@@ -145,7 +145,7 @@ ExprPtr Parser::parse_assignment_expr() {
       ExprPtr value = parse_assignment_expr();
       expect(TokenType::Semicolon,
              "Expected semicolon at the end of assignment expression");
-      return std::make_unique<AssignmentExpr>(std::move(left), std::move(value));
+      return make_unique<AssignmentExpr>(move(left), move(value));
     }
 
     return left;
@@ -161,7 +161,7 @@ ExprPtr Parser::parse_call_member_expr() {
 
     while (at().getType() == TokenType::OpenParen) {
       eat();
-      std::vector<ExprPtr> arguments;
+      vector<ExprPtr> arguments;
 
       if (at().getType() != TokenType::CloseParen) {
         arguments = parse_arguments_list();
@@ -170,7 +170,7 @@ ExprPtr Parser::parse_call_member_expr() {
       expect(TokenType::CloseParen,
              "Expected a closing parenthesis in the function call");
       caller =
-          std::make_unique<CallExpr>(std::move(caller), std::move(arguments));
+          make_unique<CallExpr>(move(caller), move(arguments));
     }
 
     return caller;
@@ -186,14 +186,14 @@ ExprPtr Parser::parse_member_access(ExprPtr left) {
            at().getType() == TokenType::OpenParen) {
       if (at().getType() == TokenType::Dot) {
         eat(); // Consume the '.'
-        std::string memberName =
+        string memberName =
             expect(TokenType::Identifier, "Expected identifier after '.'")
                 .getValue();
-        left = std::make_unique<MemberAccessExpr>(std::move(left),
-                                                  std::move(memberName));
+        left = make_unique<MemberAccessExpr>(move(left),
+                                                  move(memberName));
       } else if (at().getType() == TokenType::OpenParen) {
-        std::vector<ExprPtr> arguments = parse_args();
-        left = std::make_unique<CallExpr>(std::move(left), std::move(arguments));
+        vector<ExprPtr> arguments = parse_args();
+        left = make_unique<CallExpr>(move(left), move(arguments));
       }
     }
     return left;
@@ -204,10 +204,10 @@ ExprPtr Parser::parse_member_access(ExprPtr left) {
 
 }
 
-std::vector<ExprPtr> Parser::parse_args() {
+vector<ExprPtr> Parser::parse_args() {
   try {
     expect(TokenType::OpenParen, "Expected open parenthesis");
-    std::vector<ExprPtr> args;
+    vector<ExprPtr> args;
 
     if (at().getType() != TokenType::CloseParen) {
       args = parse_arguments_list();
@@ -222,9 +222,9 @@ std::vector<ExprPtr> Parser::parse_args() {
   }
 }
 
-std::vector<ExprPtr> Parser::parse_arguments_list() {
+vector<ExprPtr> Parser::parse_arguments_list() {
   try {
-    std::vector<ExprPtr> args;
+    vector<ExprPtr> args;
     args.push_back(parse_assignment_expr());
 
     while (at().getType() == TokenType::Comma) {
