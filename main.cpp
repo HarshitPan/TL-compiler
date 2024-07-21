@@ -16,7 +16,7 @@ using namespace std;
 int main(){
 
     // const  string str=" int main() { \nint a=10,b=20;\n a = a+b;\n printf(a); \n} #this is commment.\n";
-     ifstream file("code.h3s");
+     ifstream file("code.tl");
 
     if (!file.is_open()) {
          cout << "Error: Unable to open the file." <<  endl;

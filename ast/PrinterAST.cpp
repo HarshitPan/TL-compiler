@@ -12,7 +12,7 @@ void printProgram (unique_ptr<Program> program, const string &indent) {
   }
 
   out << '{' << endl;
-  out << indent << " \"Program\": {\n";
+  out << indent << " \"Program\": [\n";
   for (const auto &stmt : program->body) {
     printStatement(*stmt, indent + "  ");
     if (stmt != program->body.back()) {
@@ -20,7 +20,7 @@ void printProgram (unique_ptr<Program> program, const string &indent) {
     }
     out << '\n';
   }
-  out << indent << '}';
+  out << indent << ']';
   out << "\n}\n";
 }
 
